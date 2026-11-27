@@ -83,7 +83,17 @@ class Tensor:
             self.grad += np.broadcast_to(grad, self.shape)
         out.grad_fn = grad_fn
         return out
-                        
+            
+    def mean(self, dim = None, keepdim = False):
+        if dim is None:
+            self.data.size
+        elif isinstance(dim, int):
+            n = self.shape[dim]
+        else:
+            n = 1
+            for d in dim:
+                n *= self.shape[d]
+        return self.sum(dim = dim, keepdim = keepdim) / n
     
     def __mul__(self, other):
         other = other if isinstance(other, Tensor) else Tensor(other)

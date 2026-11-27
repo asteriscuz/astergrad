@@ -96,3 +96,14 @@ def test_max_matches_pytorch():
     xt.max(dim=1).values.sum().backward()
 
     assert np.allclose(x.grad, xt.grad.numpy())
+    
+def test_mean_matches_pytorch():
+    x_np = np.random.randn(3, 4)
+
+    x = Tensor(x_np)
+    (x.mean(dim=1) ** 2).sum().backward()
+
+    xt = torch.tensor(x_np, requires_grad=True)
+    (xt.mean(dim=1) ** 2).sum().backward()
+
+    assert np.allclose(x.grad, xt.grad.numpy())
